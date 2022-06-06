@@ -4,25 +4,21 @@ namespace DemoApi.Controllers;
 public class StatusController : ControllerBase
 {
 
-    private readonly StatusLookup _statusLookup;
+    private readonly ILookupCurrentStatus _statusLookup;
+    private readonly ILookupDevelopers _developerLookup;
 
-    public StatusController(StatusLookup statusLookup)
+    public StatusController(ILookupCurrentStatus statusLookup, ILookupDevelopers developerLookup)
     {
         _statusLookup = statusLookup;
+        _developerLookup = developerLookup;
     }
-
-
 
 
     // GET /status
     [HttpGet("/status")]
     public async Task<ActionResult<StatusResponse>> GetStatus()
     {
-        //var response = new StatusResponse
-        //{
-        //    CreatedAt = DateTime.Now,
-        //    Message = "Awesome. Party on Wayne"
-        //};
+
         // "Write the Code you Wish You Had" (WTCYWYH)
         StatusResponse response = await _statusLookup.GetCurrentStatusAsync();
         return Ok(response); // reponse with 200 Ok status code.
@@ -31,7 +27,8 @@ public class StatusController : ControllerBase
     [HttpGet("/status/oncalldeveloper")]
     public async Task<ActionResult<DeveloperInfo>> GetOnCallDeveloper()
     {
-        var response = new DeveloperInfo { Name = "Bob Smith", Email = "Bob@aol.com" };
+        
+        DeveloperInfo response = await _developerLookup.GetOnCallDeveloperAsync();
         return Ok(response);
     }
 }

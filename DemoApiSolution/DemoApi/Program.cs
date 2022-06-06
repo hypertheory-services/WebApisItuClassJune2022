@@ -8,7 +8,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();  // OAS 3.1 
 
 // Configure your Services
-builder.Services.AddTransient<StatusLookup>();
+
+builder.Services.AddTransient<ILookupCurrentStatus, StatusLookup>(); // Lazy setup.
+builder.Services.AddTransient<ILookupDevelopers, StatusLookup>();
+
 
 var app = builder.Build();
 
@@ -23,4 +26,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+app.Run(); // Period of time. 
