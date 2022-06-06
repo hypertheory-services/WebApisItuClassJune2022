@@ -10,7 +10,7 @@ builder.Services.AddSwaggerGen();  // OAS 3.1
 // Configure your Services
 
 builder.Services.AddTransient<ILookupCurrentStatus, StatusLookup>(); // Lazy setup.
-builder.Services.AddTransient<ILookupDevelopers, DeveloperLookup>();
+builder.Services.AddTransient<ILookupDevelopers, StatusLookup>();
 
 // Configure Adapters
 
