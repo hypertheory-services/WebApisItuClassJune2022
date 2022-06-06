@@ -10,9 +10,15 @@ builder.Services.AddSwaggerGen();  // OAS 3.1
 // Configure your Services
 
 builder.Services.AddTransient<ILookupCurrentStatus, StatusLookup>(); // Lazy setup.
-builder.Services.AddTransient<ILookupDevelopers, StatusLookup>();
+builder.Services.AddTransient<ILookupDevelopers, DeveloperLookup>();
 
+// Configure Adapters
 
+builder.Services.AddHttpClient<DeveloperApiAdapter>(httpClient =>
+{
+    // where you can do the configuration for the thing.
+    httpClient.BaseAddress = new Uri("http://localhost:1338");
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
