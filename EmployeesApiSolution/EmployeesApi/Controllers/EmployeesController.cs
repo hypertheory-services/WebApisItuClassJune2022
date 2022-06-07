@@ -9,9 +9,10 @@ public class EmployeesController : ControllerBase
         _employeeLookup = employeeLookup;
     }
 
-    [HttpGet("/employees/{id}")]
+    [HttpGet("/employees/{id:bsonid}")]
     public async Task<ActionResult<EmployeeDocumentResponse>> GetEmployeeByIdAsync(string id)
     {
+       
         EmployeeDocumentResponse response = await _employeeLookup.GetEmployeeByIdAsync(id);
         if (response == null)
         {

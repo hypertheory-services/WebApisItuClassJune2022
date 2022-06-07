@@ -3,7 +3,10 @@
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddRouting(options =>
+{
+    options.ConstraintMap.Add("bsonid", typeof(BsonIdConstaint));
+});
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -13,6 +16,7 @@ builder.Services.AddSwaggerGen();
 // the IOptions<T> service is now going to be injectable anywhere we want.
 builder.Services.Configure<MongoConnectionOptions>(builder.Configuration.GetSection(MongoConnectionOptions.SectionName));
 
+builder.Services.AddScoped<ILookupEmployees, EmployeeLookup>(); // TODO talk about the russian doll thing.
 
 builder.Services.AddSingleton<EmployeesMongoDbAdapter>(); // MongoDb.Driver says make this a singleton.
 
