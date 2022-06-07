@@ -1,5 +1,24 @@
 ﻿namespace EmployeesApi.Models;
 
+public record CollectionResponse<T>
+{
+    public List<T> Data
+    {
+        get; set;
+    } = new();
+}
+
+public record EmployeeSummaryResponse
+{
+    public EmployeeNameInformation Name
+    {
+        get; set;
+    } = new();
+    public string Id
+    {
+        get; set;
+    } = "";
+}
 public record EmployeeDocumentResponse
 {
     public string Id

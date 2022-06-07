@@ -9,6 +9,12 @@ public class EmployeesController : ControllerBase
         _employeeLookup = employeeLookup;
     }
 
+    [HttpGet("/employees")]
+    public async Task<ActionResult> GetEmployeesCollectionAsync()
+    {
+        return Ok();
+    }
+
     [HttpGet("/employees/{id:bsonid}")]
     public async Task<ActionResult<EmployeeDocumentResponse>> GetEmployeeByIdAsync(string id)
     {

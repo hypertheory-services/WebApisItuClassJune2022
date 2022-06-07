@@ -14,6 +14,8 @@ public class EmployeeLookup : ILookupEmployees
 
     public async Task<EmployeeDocumentResponse> GetEmployeeByIdAsync(string id)
     {
+
+        // if we get here, that sucker is an ObjectID
         var bId = ObjectId.Parse(id);
 
         var projection = Builders<Employee>.Projection.Expression(emp => new EmployeeDocumentResponse
