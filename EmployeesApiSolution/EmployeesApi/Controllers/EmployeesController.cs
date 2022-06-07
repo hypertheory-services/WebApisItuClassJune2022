@@ -2,21 +2,24 @@
 
 public class EmployeesController : ControllerBase
 {
+    private readonly ILookupEmployees _employeeLookup;
+
+    public EmployeesController(ILookupEmployees employeeLookup)
+    {
+        _employeeLookup = employeeLookup;
+    }
 
     [HttpGet("/employees/{id}")]
     public async Task<ActionResult<EmployeeDocumentResponse>> GetEmployeeByIdAsync(string id)
     {
-        if(int.Parse(id) > 100)
+        EmployeeDocumentResponse response = await _employeeLookup.GetEmployeeByIdAsync(id);
+        if (response == null)
         {
             return NotFound();
         }
-        var response = new EmployeeDocumentResponse
+        else
         {
-            Id = id,
-            Name = new EmployeeNameInformation { FirstName = "Bob", LastName = "Smith" },
-            Department = "DEV"
-
-        };
-        return Ok(response);
+            return Ok(response);
+        }
     }
 }
