@@ -16,10 +16,12 @@ builder.Services.AddTransient<ILookupDevelopers, DeveloperLookup>();
 
 // Configure Adapters
 
+var developerApiAddress = builder.Configuration.GetValue<string>("developerApi");
+
 builder.Services.AddHttpClient<DeveloperApiAdapter>(httpClient =>
 {
     // where you can do the configuration for the thing.
-    httpClient.BaseAddress = new Uri("http://localhost:1338");
+    httpClient.BaseAddress = new Uri(developerApiAddress);
 })
     .AddPolicyHandler(ApiPolicies.GetClusterRetryPolicy())
 .AddPolicyHandler(ApiPolicies.GetClusterCircuitBreakerPolicy());
