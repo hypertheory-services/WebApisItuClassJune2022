@@ -30,6 +30,12 @@ public class Employee
         get; set;
     }
 
+    [BsonElement("removed")]
+    public bool? Removed
+    {
+        get; set;
+    } = false;
+
 }
 
 

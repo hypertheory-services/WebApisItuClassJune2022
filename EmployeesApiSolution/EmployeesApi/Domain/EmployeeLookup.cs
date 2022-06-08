@@ -39,9 +39,20 @@ public class EmployeeLookup : ILookupEmployees, IManageEmployees
         
     }
 
+    public async Task FireAsync(string id)
+    {
+        var bId = ObjectId.Parse(id);
+        var filter = Builders<Employee>.Filter.Where(e => e.Id == bId);
+        var update = Builders<Employee>.Update.Set(e => e.Removed, true);
+
+        await _adapter.GetEmployeeCollection().UpdateOneAsync(filter, update);
+       
+    }
+
     public async Task<List<EmployeeSummaryResponse>> GetAllEmployeeSummariesAsync()
     {
         var query =  _adapter.GetEmployeeCollection().AsQueryable()
+            .Where(e => !e.Removed.HasValue || e.Removed.Value == false)
             .OrderBy(e => e.Name.LastName)
              .Select(e => new EmployeeSummaryResponse
              {
@@ -73,7 +84,7 @@ public class EmployeeLookup : ILookupEmployees, IManageEmployees
         });
 
         var response = await _adapter.GetEmployeeCollection()
-            .Find(e => e.Id == bId)
+            .Find(e => e.Id == bId && !e.Removed.HasValue || e.Removed!.Value == false)
             .Project(projection).SingleOrDefaultAsync();
 
         return response;

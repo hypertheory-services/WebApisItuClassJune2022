@@ -17,7 +17,7 @@ public class EmployeesMongoDbAdapter
         _logger = logger;
 
         var clientSettings = MongoClientSettings.FromConnectionString(options.Value.ConnectionString);
-
+        //clientSettings.LinqProvider = MongoDB.Driver.Linq.LinqProvider.V3;
         if(options.Value.LogCommands)
         {
             clientSettings.ClusterConfigurator = db =>
