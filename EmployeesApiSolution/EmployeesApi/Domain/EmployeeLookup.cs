@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace EmployeesApi.Domain;
 
@@ -10,6 +11,22 @@ public class EmployeeLookup : ILookupEmployees
     public EmployeeLookup(EmployeesMongoDbAdapter adapter)
     {
         _adapter = adapter;
+    }
+
+    public async Task<List<EmployeeSummaryResponse>> GetAllEmployeeSummariesAsync()
+    {
+        var query =  _adapter.GetEmployeeCollection().AsQueryable()
+            .OrderBy(e => e.Name.LastName)
+             .Select(e => new EmployeeSummaryResponse
+             {
+                 Id = e.Id.ToString(),
+                 Name = new EmployeeNameInformation { FirstName = e.Name.FirstName, LastName = e.Name.LastName }
+             });
+
+
+        // a thing we add here later.
+        var response = await query.ToListAsync();
+        return response;
     }
 
     public async Task<EmployeeDocumentResponse> GetEmployeeByIdAsync(string id)

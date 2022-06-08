@@ -18,6 +18,8 @@ builder.Services.AddTransient<ILookupDevelopers, DeveloperLookup>();
 
 var developerApiAddress = builder.Configuration.GetValue<string>("developerApi");
 
+builder.Services.AddHostedService<BackgroundTask>(); // Channels
+
 builder.Services.AddHttpClient<DeveloperApiAdapter>(httpClient =>
 {
     // where you can do the configuration for the thing.

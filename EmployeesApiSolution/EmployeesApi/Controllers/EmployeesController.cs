@@ -10,9 +10,13 @@ public class EmployeesController : ControllerBase
     }
 
     [HttpGet("/employees")]
-    public async Task<ActionResult> GetEmployeesCollectionAsync()
+    public async Task<ActionResult<CollectionResponse<EmployeeSummaryResponse>>> GetEmployeesCollectionAsync()
     {
-        return Ok();
+
+        List<EmployeeSummaryResponse> data = await  _employeeLookup.GetAllEmployeeSummariesAsync();
+
+        var response = new CollectionResponse<EmployeeSummaryResponse> { Data = data };
+        return Ok(response);
     }
 
     [HttpGet("/employees/{id:bsonid}")]
