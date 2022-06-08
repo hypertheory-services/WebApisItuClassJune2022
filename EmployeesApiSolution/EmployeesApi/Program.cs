@@ -17,6 +17,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.Configure<MongoConnectionOptions>(builder.Configuration.GetSection(MongoConnectionOptions.SectionName));
 
 builder.Services.AddScoped<ILookupEmployees, EmployeeLookup>(); // TODO talk about the russian doll thing.
+builder.Services.AddScoped<IManageEmployees, EmployeeLookup>();
 
 builder.Services.AddSingleton<EmployeesMongoDbAdapter>(); // MongoDb.Driver says make this a singleton.
 

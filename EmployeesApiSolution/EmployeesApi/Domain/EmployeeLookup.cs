@@ -4,13 +4,39 @@ using MongoDB.Driver.Linq;
 
 namespace EmployeesApi.Domain;
 
-public class EmployeeLookup : ILookupEmployees
+public class EmployeeLookup : ILookupEmployees, IManageEmployees
 {
     private readonly EmployeesMongoDbAdapter _adapter;
 
     public EmployeeLookup(EmployeesMongoDbAdapter adapter)
     {
         _adapter = adapter;
+    }
+
+    public async Task<EmployeeDocumentResponse> CreateEmployeeAsync(EmployeeCreateRequest request)
+    {
+        var employeeToAdd = new Employee
+        {
+            Department = request.Department,
+            Name = new NameInformation { FirstName = request.FirstName, LastName = request.LastName },
+            Salary = request.StartingSalary
+        };
+
+        // This is a "side effect producing call"
+        await _adapter.GetEmployeeCollection().InsertOneAsync(employeeToAdd);
+
+        var response = new EmployeeDocumentResponse
+        {
+            Id = employeeToAdd.Id.ToString(),
+            Department = employeeToAdd.Department,
+            Name = new EmployeeNameInformation
+            {
+                FirstName = employeeToAdd.Name.FirstName,
+                LastName = employeeToAdd.Name.LastName
+            }
+        };
+        return response;
+        
     }
 
     public async Task<List<EmployeeSummaryResponse>> GetAllEmployeeSummariesAsync()

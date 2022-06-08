@@ -24,6 +24,11 @@ public class Employee
         get; set;
     } = new();
 
+    [BsonElement("salary")]
+    public decimal? Salary
+    {
+        get; set;
+    }
 
 }
 
