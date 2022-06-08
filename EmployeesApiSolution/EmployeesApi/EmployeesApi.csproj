@@ -11,4 +11,12 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+
+  <PropertyGroup>
+    <IncludeOpenApiAnalyzers>true</IncludeOpenApiAnalyzers>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
 </Project>

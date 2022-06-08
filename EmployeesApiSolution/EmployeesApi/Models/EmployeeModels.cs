@@ -41,11 +41,13 @@ public record EmployeeDocumentResponse
 
 public record EmployeeNameInformation
 {
+    [Required]
     public string FirstName
     {
         get; init;
     } = string.Empty;
 
+    [Required]
     public string LastName
     {
         get; init;
@@ -77,6 +79,12 @@ public class EmployeeCreateRequest : IValidatableObject
 
     [Required]
     public decimal? StartingSalary
+    {
+        get; set;
+    }
+
+    [Required]
+    public string FavoriteColor
     {
         get; set;
     }

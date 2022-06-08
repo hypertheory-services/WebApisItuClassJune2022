@@ -89,4 +89,30 @@ public class EmployeeLookup : ILookupEmployees, IManageEmployees
 
         return response;
     }
+
+    public async Task<bool> UpdateDepartmentAsync(string id, string department)
+    {
+        var bId = ObjectId.Parse(id);
+        var filter = Builders<Employee>.Filter.Where(e => e.Id == bId); // TODO: Only update employees that haven't been removed.
+        var update = Builders<Employee>.Update.Set(e => e.Department, department);
+
+        var changes = await _adapter.GetEmployeeCollection().UpdateOneAsync(filter, update);
+
+        //return changes.ModifiedCount == 1;
+        return changes.MatchedCount == 1;
+    }
+
+    public async Task<bool> UpdateNameAsync(string id, EmployeeNameInformation name)
+    {
+        var updatedName = new NameInformation { FirstName = name.FirstName, LastName = name.LastName };
+
+        var bId = ObjectId.Parse(id);
+        var filter = Builders<Employee>.Filter.Where(e => e.Id == bId); // TODO: Only update employees that haven't been removed.
+        var update = Builders<Employee>.Update.Set(e => e.Name, updatedName);
+
+        var changed = await _adapter.GetEmployeeCollection().UpdateOneAsync(filter, update);
+
+        return changed.MatchedCount == 1;
+
+    }
 }
